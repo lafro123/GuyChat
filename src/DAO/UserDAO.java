@@ -30,6 +30,7 @@ public class UserDAO implements DAO<Utilisateur> {
             } else {
                 System.out.println("problème de lecture du type dans la bdd");
             }
+            rs.close();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -71,6 +72,7 @@ public class UserDAO implements DAO<Utilisateur> {
                     userAway += username + " ";
                 }
             }
+            rs.close();
 
             listStatusUsers = "/co: " + userCo + "usernameDeco: " + userDeco + "usernameAway: " + userAway;
 
@@ -95,6 +97,62 @@ public class UserDAO implements DAO<Utilisateur> {
         }
     }
 
+    public String nbStats() {
+        int nbBan = 0, nbOFF = 0, nbON = 0, nbAway = 0, nbAdmin = 0, nbMod = 0, nbClassic = 0;
+        String result;
+        try {
+            Statement stmt = this.conn.createStatement();
+            ResultSet rsBan = stmt.executeQuery("SELECT COUNT(*) AS ban FROM user WHERE ban = 1");
+            if (rsBan.next()) {
+                nbBan = rsBan.getInt("ban");
+            }
+            rsBan.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsOFF = stmt.executeQuery("SELECT COUNT(*) AS status FROM user WHERE status = 'OFFLINE'");
+            if (rsOFF.next()) {
+                nbOFF = rsOFF.getInt("status");
+            }
+            rsOFF.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsON = stmt.executeQuery("SELECT COUNT(*) AS status FROM user WHERE status = 'ONLINE'");
+            if (rsON.next()) {
+                nbON = rsON.getInt("status");
+            }
+            rsON.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsAway = stmt.executeQuery("SELECT COUNT(*) AS status FROM user WHERE status = 'AWAY'");
+            if (rsAway.next()) {
+                nbAway = rsAway.getInt("status");
+            }
+            rsAway.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsAdmin = stmt.executeQuery("SELECT COUNT(*) AS type FROM user WHERE type = 'ADMINISTRATOR'");
+            if (rsAdmin.next()) {
+                nbAdmin = rsAdmin.getInt("type");
+            }
+            rsAdmin.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsMod = stmt.executeQuery("SELECT COUNT(*) AS type FROM user WHERE type = 'MODERATOR'");
+            if (rsMod.next()) {
+                nbMod = rsMod.getInt("type");
+            }
+            rsMod.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            ResultSet rsClassic = stmt.executeQuery("SELECT COUNT(*) AS type FROM user WHERE type = 'CLASSIC'");
+            if (rsClassic.next()) {
+                nbClassic = rsClassic.getInt("type");
+            }
+            rsClassic.close(); // Fermer le ResultSet après avoir obtenu les données nécessaires
+
+            result = nbBan + " " + nbON + " " + nbOFF + " " + nbAway + " " + nbAdmin + " " + nbMod + " " + nbClassic;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return result;
+
+    }
+
     public int nbUsers() {// nb personnes par status ADMIN, AWAY
         int nbLignes = 0;
         try {
@@ -104,6 +162,7 @@ public class UserDAO implements DAO<Utilisateur> {
             if(rs.next()) {
                 nbLignes = rs.getInt("username");
             }
+            rs.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -221,6 +280,7 @@ public class UserDAO implements DAO<Utilisateur> {
             if(rs.next()) {
                 isBan = rs.getBoolean("ban");
             }
+            rs.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

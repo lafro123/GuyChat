@@ -28,7 +28,8 @@ public class Server {
 
     private static final int SERVER_PORT = 9999; //test
     //private static final String SERVER_IP ="172.20.10.3";
-    private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress(); // retourne l'adress ip de ton ordi
+    private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress();//"192.168.1.37";
+    // retourne l'adress ip de ton ordi
 
     static Set<String> bannedUser = new HashSet<>();
 
@@ -95,7 +96,7 @@ public class Server {
             }
 
         } catch (SQLException e) {
-        throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -314,15 +315,32 @@ public class Server {
         }
     }
     public static void setStatus(String name,String Status) {
-    try{
-        Connection conn = ConnectionDB.getConnection();
-        UserDAO userDao = new UserDAO(conn);
-        userDao.setStatus(name, Status);
+        try{
+            Connection conn = ConnectionDB.getConnection();
+            UserDAO userDao = new UserDAO(conn);
+            userDao.setStatus(name, Status);
 
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
+    public static void majStatProfil() {
+        String stats;
+        try{
+            Connection conn = ConnectionDB.getConnection();
+            UserDAO userDao = new UserDAO(conn);
+
+            stats = userDao.nbStats();
+
+            for (ClientHandler handler : clientHandlers) {
+                handler.getWriter().println("/nbDiag: " + stats);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public static void deleteUser(String name) {
@@ -334,6 +352,5 @@ public class Server {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
     }
 }

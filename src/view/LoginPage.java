@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.concurrent.TimeUnit;
 
 public class LoginPage extends JFrame implements ActionListener{
@@ -90,38 +91,32 @@ public class LoginPage extends JFrame implements ActionListener{
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-
-
-
-
     public void actionPerformed(ActionEvent e) {
 
-
-        if (e.getSource() == loginButton ) {
-
+        if (e.getSource() == loginButton) {
 
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
             loginController.sendMessage("/testConnexion: " + username + " " + password);
 
-            //  boolean userIsValid = loginController.getUserIsValid();
             Boolean userIsValid = loginController.getUserIsValidWithTimeout(2, TimeUnit.SECONDS);
             if (userIsValid == null) {
                 System.out.println("marche pas");
 
             } else {
-                if (username.isEmpty() || password.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe.");
-                } else if (userIsValid) {
-                    loginController.setUsername(username);
-                    loginController.setUserPassword(password);
-                    JOptionPane.showMessageDialog(this, "Connexion sucess !");
+                if (username.isEmpty() || password.isEmpty()) { // un ou les champs de text sont vides
+                    JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe."); // popup qui le signale
+                } else if (userIsValid) { // si la variable = true (c'est a dire que le mdp et nom n'existe pas encore dans la bdd)
+                    loginController.setUsername(username); // envoyer au controller le nouveau nom d'utilisateur
+                    loginController.setUserPassword(password); // envoyer au controller le nouveau mot de passe
+                    JOptionPane.showMessageDialog(this, "Connexion sucess !"); // popup "connection réussie"
                     MessageController messageController = new MessageController(loginController.getModel());
                     pageAcceuil view2 = new pageAcceuil(messageController);
                     messageController.setView(view2);
-                    dispose();
-                    view2.setVisible(true);
+                    dispose(); // mettre en place les elements afin qu'il soit tous dans la page
+                    view2.setVisible(true); // rendre visible la fenetre de connection
+                    setVisible(false); // cacher la fenetre d'inscription
                 } else {
                     JOptionPane.showMessageDialog(this, "Incorrect user or password.");
                 }

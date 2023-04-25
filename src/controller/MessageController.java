@@ -134,7 +134,7 @@ public class MessageController extends BaseController {
 
             view.repaint();
             view.updateUserTypeLabel(); // Ajoutez cette ligne pour mettre à jour le label
-        }
+        } else if (message.startsWith("/nbDiag:")) {} // ignorer si ce message est recu
         else {
             if (message.startsWith(model.getUser().getUsername())) {
                 view.sendMessageRight(message);

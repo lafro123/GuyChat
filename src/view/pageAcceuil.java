@@ -25,8 +25,6 @@ public class pageAcceuil extends JFrame implements ActionListener {
     JPanel userButtonsPanel;
     JTextField messageField;
     JButton sendButton;
-
-
     JLabel userTypeLabel;
     Vector<JButton> userButtons;
     //static Set<String> nomsCo = new HashSet<>(Arrays.asList("jac","rom","alix","ethan"));
@@ -64,7 +62,7 @@ public class pageAcceuil extends JFrame implements ActionListener {
 
                 ProfilWindowController profilWindowController = new ProfilWindowController(messageController.getModel());
                 ProfilWindow view2 = new ProfilWindow(profilWindowController);
-                profilWindowController.setView(view2);
+                profilWindowController.setView(view2, pageAcceuil.this);
                 view2.setVisible(true);
             }
         });
@@ -160,7 +158,6 @@ public class pageAcceuil extends JFrame implements ActionListener {
             }
         });
 
-
         bottomPanel.add(messageField, BorderLayout.CENTER);
         sendButton = new JButton("\u27a4");
         sendButton.setForeground(Color.WHITE);
@@ -242,18 +239,18 @@ public class pageAcceuil extends JFrame implements ActionListener {
 
                 JButton userButton = new JButton(nomV2);
 
-                    userButton.setBackground(Color.GREEN);
-                    userButtons.add(userButton);
-                    userButtonsPanel.add(userButton);
-                    userButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                userButton.setBackground(Color.GREEN);
+                userButtons.add(userButton);
+                userButtonsPanel.add(userButton);
+                userButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
 
-                            parametter parametter = new parametter(userButton.getText(), messageController);
-                            parametter.setVisible(true);
-                        }
+                        parametter parametter = new parametter(userButton.getText(), messageController);
+                        parametter.setVisible(true);
+                    }
 
-                    });
+                });
 
             }
 
@@ -301,21 +298,21 @@ public class pageAcceuil extends JFrame implements ActionListener {
 
                 JButton userButton = new JButton(nomV2);
 
-                    userButton.setBackground(Color.RED);
+                userButton.setBackground(Color.RED);
 
-                    userButtons.add(userButton);
-                    userButtonsPanel.add(userButton);
+                userButtons.add(userButton);
+                userButtonsPanel.add(userButton);
 
 
-                    userButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(ActionEvent e) {
+                userButton.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
 
-                            parametter parametter = new parametter(userButton.getText(), messageController);
-                            parametter.setVisible(true);
-                        }
+                        parametter parametter = new parametter(userButton.getText(), messageController);
+                        parametter.setVisible(true);
+                    }
 
-                    });
+                });
 
             }
 
