@@ -101,16 +101,24 @@ class ClientHandler implements Runnable {
                         String newName = parts[1];
                         String newMdp = parts[2];
                         Server.changeProfil(newName,newMdp, userSender);
-                    }else if (onlyTheMessage.startsWith("/ChangeStatus:online")) {
+                    } else if (onlyTheMessage.startsWith("/MAJStats"))  {
+                        Server.majStatProfil();
+                    }
+                    else if (onlyTheMessage.startsWith("/ChangeStatus:online")) {
                         Server.setStatus(username,"ONLINE");
                     }else if (onlyTheMessage.startsWith("/ChangeStatus:away")) {
                         Server.setStatus(username,"AWAY");
                     }else if (onlyTheMessage.startsWith("/DeleteAccount")) {
                         Server.deleteUser(username);
+                    } else if (onlyTheMessage.startsWith("/TestDeconnexion")) {
+                        Server.broadcastMessage("* " + username + " has left the chat *");
+                        Server.setStatus(username, "OFFLINE");
+                        Server.clientHandlers.remove(this);
+                        Server.afficherQuiEstCo(); //mettre a jour les boutons des autres
                     } else {
                         Server.broadcastMessage(userSender + ": " + onlyTheMessage);
                     }
-                   Server.afficherQuiEstCo();
+                    Server.afficherQuiEstCo();
                 }
 
             }

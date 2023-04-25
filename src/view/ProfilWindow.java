@@ -14,6 +14,7 @@ import java.awt.Image;
 import java.io.File;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import model.Utilisateur;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -48,14 +49,11 @@ public class ProfilWindow extends JFrame {
     Color bleufonce2 = new Color(31, 97, 141);
 
 
-
-
     public ProfilWindow(ProfilWindowController profilWindowController ) {
         // Création de la fenêtre principale
         setTitle("Profil");
         setSize(600, 400);
         setLocationRelativeTo(null);
-        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // Création du panneau principal
         JPanel mainPanel = new JPanel();
@@ -93,34 +91,18 @@ public class ProfilWindow extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                /*profilController.sendMessage("/testDeconnexion: ");
+                profilWindowController.sendMessage("/TestDeconnexion: ");
+                dispose();
 
-                //  boolean userIsValid = loginController.getUserIsValid();
-                Boolean userIsValid = profilController.getUserIsValidWithTimeout(2, TimeUnit.SECONDS);
+                pageAcceuil viewA = null;
 
-                JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe.");
+                profilWindowController.closeChatWindow(viewA);
 
-                    } else if (userIsValid) {
-                        loginController.setUsername(username);
-                        loginController.setUserPassword(password);
-                        JOptionPane.showMessageDialog(this, "Connexion sucess !");
-                        MessageController messageController = new MessageController(loginController.getModel());
-                        pageAcceuil view2 = new pageAcceuil(messageController);
-                        messageController.setView(view2);
-                        dispose();
-                        view2.setVisible(true);
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Incorrect user or password.");
-                    }*/
-
-                /*dispose();
-                profilController.getModel().getUser();
-
-                Client model = new Client(); //creer le client apres la page login sinon entered trop tot
+                Client model = new Client(); // nouveau client
 
                 LoginController loginController = new LoginController(model);
                 LoginPage view = new LoginPage(loginController);
-                loginController.setView(view);*/
+                loginController.setView(view);
             }
         });
 
@@ -193,6 +175,7 @@ public class ProfilWindow extends JFrame {
         JTextField typeField = new JTextField(profilWindowController.getModel().getUser().getUserType().name());
         displayPanel.add(typeField);
         typeField.setSize(200, 24);
+        typeField.setEditable(false); // champ de text type non modifiable
 
         JLabel userStatusLabel = new JLabel("Status : ");
         displayPanel.add(userStatusLabel);
@@ -231,12 +214,12 @@ public class ProfilWindow extends JFrame {
 
 
         //Creation du panel de statistiques sur les Status
-        ChartPanel chartPanel = new ChartPanel(chartStatus());
+        ChartPanel chartPanel = new ChartPanel(chartStatus(profilWindowController.getNbON(), profilWindowController.getNbOFF(), profilWindowController.getNbAway()));
         chartPanel.setPreferredSize(new java.awt.Dimension(150, 150));
         statsPanel.add(chartPanel);
 
         //Creation du panel de statistiques sur les Types d'utilisateurs
-        ChartPanel chartPanel2 = new ChartPanel(chartType());
+        ChartPanel chartPanel2 = new ChartPanel(chartType(profilWindowController.getNbBan(), profilWindowController.getNbClassic(), profilWindowController.getNbAdmin(), profilWindowController.getNbMod()));
         chartPanel2.setPreferredSize(new java.awt.Dimension(150, 150));
         statsPanel.add(chartPanel2);
 
@@ -246,7 +229,7 @@ public class ProfilWindow extends JFrame {
         statsPanel.add(chartPanel3);
 
         //Creation du panel de statistiques sur le nombre de connexions dans le temps
-        ChartPanel chartPanelCo = new ChartPanel(chartConnections());
+        ChartPanel chartPanelCo = new ChartPanel(chartConnections(profilWindowController.getNbCo()));
         chartPanelCo.setPreferredSize(new java.awt.Dimension(150, 150));
         statsPanel.add(chartPanelCo);
 
@@ -276,8 +259,7 @@ public class ProfilWindow extends JFrame {
                 centerPanel.add(statsScrollPane,BorderLayout.CENTER);
 
                 setContentPane(mainPanel);
-
-
+                profilWindowController.sendMessage("/MAJStats: ");
             }
         });
         saveButton.addActionListener(new ActionListener() {//er
@@ -286,6 +268,7 @@ public class ProfilWindow extends JFrame {
                 profilWindowController.sendMessage("/MAJProfil: "+nameField.getText()+" "+pwField.getText());
                 profilWindowController.getModel().getUser().setUsername(nameField.getText());
                 profilWindowController.getModel().getUser().setPassword(pwField.getText());
+                setVisible(false);
             }
         });
 
@@ -298,8 +281,6 @@ public class ProfilWindow extends JFrame {
                 centerPanel.add(southButtonsPanel, BorderLayout.SOUTH);
                 centerPanel.add(paramScrollPane, BorderLayout.CENTER);
                 setContentPane(mainPanel);
-
-
             }
         });
         deleteButton.addActionListener(new ActionListener() {
@@ -311,16 +292,9 @@ public class ProfilWindow extends JFrame {
 
         mainPanel.add(leftPanel, BorderLayout.WEST);
         mainPanel.add(centerPanel, BorderLayout.CENTER);
-
-
-
-
         // Ajout du panneau principal à la fenêtre
         setContentPane(mainPanel);
     }
-
-
-
     // Methode to resize imageIcon with the same size of a Jlabel
     public ImageIcon ResizeImage(String ImagePath, JLabel label)
     {
@@ -332,11 +306,12 @@ public class ProfilWindow extends JFrame {
     }
 
     //fonctions pour créer les graphes
-    public JFreeChart chartStatus(){
-        DefaultPieDataset dataset1 = new DefaultPieDataset();
-        dataset1.setValue("Online", 2);
-        dataset1.setValue("Offline", 3);
-        dataset1.setValue("Away", 5);
+    DefaultPieDataset dataset1 = new DefaultPieDataset();
+    public JFreeChart chartStatus(int online, int offline, int away){
+
+        dataset1.setValue("Online", online); // recupere le nombre d'utilisateur ONLINE
+        dataset1.setValue("Offline", offline); // recupere le nombre d'utilisateur OFFLINE
+        dataset1.setValue("Away", away); // recupere le nombre d'utilisateur AWAY
 
         // Création du camembert par statut
         JFreeChart chart1 = ChartFactory.createPieChart(
@@ -354,15 +329,14 @@ public class ProfilWindow extends JFrame {
 
         return chart1;
     }
-
-
-    public JFreeChart chartType(){
+    DefaultPieDataset dataset2 = new DefaultPieDataset();
+    public JFreeChart chartType(int ban, int classic, int admin, int moderator){
         // Création du dataset pour le camembert par type
-        DefaultPieDataset dataset2 = new DefaultPieDataset();
-        dataset2.setValue("Utilisateurs", 2);
-        dataset2.setValue("Modérateurs", 3);
-        dataset2.setValue("Administrateurs", 3);
-        dataset2.setValue("Bannis", 5);
+
+        dataset2.setValue("Utilisateurs", classic); // nombre d'utilisateur de type classic
+        dataset2.setValue("Modérateurs", moderator);
+        dataset2.setValue("Administrateurs", admin);
+        dataset2.setValue("Bannis", ban); // nombre d'utilisateur bannis
 
         // Création du camembert par type
         JFreeChart chart2 = ChartFactory.createPieChart(
@@ -419,10 +393,10 @@ public class ProfilWindow extends JFrame {
         return chart;
     }
 
-    public JFreeChart chartConnections(){
+    public JFreeChart chartConnections(int nbCo){
         // Création de la série temporelle
         TimeSeries series2 = new TimeSeries("Nombre de connexions");
-        series2.add(new Millisecond(new Date(2023, 3, 1, 0, 0, 0)), 10);
+        series2.add(new Millisecond(new Date(2023, 3, 1, 0, 0, 0)), nbCo);
         series2.add(new Millisecond(new Date(2023, 3, 2, 0, 0, 0)), 15);
         series2.add(new Millisecond(new Date(2023, 3, 3, 0, 0, 0)), 20);
         series2.add(new Millisecond(new Date(2023, 3, 4, 0, 0, 0)), 30);
@@ -459,11 +433,6 @@ public class ProfilWindow extends JFrame {
 
         return chartCo;
     }
-
-    /*public static void main(String[] args) {
-        ProfilWindow window = new ProfilWindow();
-        window.setVisible(true);
-    }*/
 }
 
 
