@@ -26,7 +26,7 @@ import static model.Utilisateur.UserType.*;
 
 public class Server {
 
-    private static final int SERVER_PORT = 9999;
+    private static final int SERVER_PORT = 9999; //test
     //private static final String SERVER_IP ="172.20.10.3";
     private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress(); // retourne l'adress ip de ton ordi
 
