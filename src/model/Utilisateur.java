@@ -11,11 +11,8 @@ public class Utilisateur {
 
     Utilisateur(String username,String mdp){
         this.username=username;
-        this.password=mdp; //test
+        this.password=mdp;
         this.isBan = false;
-    }
-    Utilisateur(String pseudo){
-        this.username=pseudo;
     }
 
     public void setUserType(UserType userType) {

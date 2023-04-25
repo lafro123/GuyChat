@@ -10,13 +10,17 @@ import java.awt.event.ActionListener;
 public class GifButtons extends JDialog {
     Color bleuclair = new Color(234, 242, 248);
     Color bleufonce2 = new Color(31, 97, 141);
+
+
     public GifButtons(MessageController messageController) {
+
+        //titre de la page
         setTitle("Choose GIF");
         setSize(250, 250);
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
         JPanel gifPannel = new JPanel(new GridLayout(0, 1));
-
+        //initilaise tous les boutons de GIF et les affiche
         JButton happyButton = new JButton("Happy");
         happyButton.setBackground(bleufonce2);
         happyButton.setForeground(bleuclair);
@@ -48,8 +52,7 @@ public class GifButtons extends JDialog {
         saussageButton.setBackground(bleufonce2);
         saussageButton.setForeground(bleuclair);
 
-
-
+        //on les ajoute au pannel de boutons
         gifPannel.add(happyButton);
         gifPannel.add(surprisedButton);
         gifPannel.add(angryButton);
@@ -61,13 +64,10 @@ public class GifButtons extends JDialog {
         gifPannel.add(hypedButton);
         gifPannel.add(saussageButton);
 
-
-
-
-
         getContentPane().add(gifPannel, BorderLayout.CENTER);
 
 
+//on focntion du boutons cliqué, on envoit un message different au serveur afin qu'il envoit le bon GIF aux autres clients
         happyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,56 +88,64 @@ public class GifButtons extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFangry");
-                dispose();            }
+                dispose();
+            }
         });
 
         sadButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFsad");
-                dispose();            }
+                dispose();
+            }
         });
 
         sexyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFsexy");
-                dispose();            }
+                dispose();
+            }
         });
 
         disgustedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFdisgusted");
-                dispose();            }
+                dispose();
+            }
         });
 
         boredButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFbored");
-                dispose();            }
+                dispose();
+            }
         });
 
         funnyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFfunny");
-                dispose();            }
+                dispose();
+            }
         });
 
         hypedButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFhyped");
-                dispose();            }
+                dispose();
+            }
         });
 
         saussageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 messageController.sendMessage("/GIF:GIFsaussage");
-                dispose();            }
+                dispose();
+            }
         });
 
 

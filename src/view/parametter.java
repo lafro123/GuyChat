@@ -27,7 +27,7 @@ public class parametter extends JFrame implements ActionListener {
         this.nom = nom;
         JPanel parpan = new JPanel(new GridLayout(0, 1)); // Changez le layout en GridLayout avec un nombre variable de lignes
        parpan.setPreferredSize(new Dimension(200, 300));
-
+//ajout des differents boutons d'action
         ban = new JButton("Ban");
         ban.addActionListener(this);
         ban.setBackground(bleufonce1);
@@ -55,7 +55,7 @@ public class parametter extends JFrame implements ActionListener {
 
         // Créez un nouveau JPanel pour les boutons de type d'utilisateur
         userTypeButtonsPanel = new JPanel(new GridLayout(3, 1));
-        //userTypeButtonsPanel.setPreferredSize(new Dimension(300, 300));
+
 
         setAdminButton = new JButton("Set Admin");
         setAdminButton.addActionListener(this);
@@ -96,13 +96,16 @@ public class parametter extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         int userType;
+
+        //on stock le type d" l'utilisateur dans une variable afin de verifier si il peut realiser certaines actions
        if(messageController.getModel().getUser().getUserType()==ADMINISTRATOR){
            userType =1;
        }else if(messageController.getModel().getUser().getUserType()==MODERATOR){
            userType=2;
        }else userType=3;
 
-        if (e.getSource() == ban) {
+        if (e.getSource() == ban) { //possibilité de bannir que si utilisateur est admin ou moderateur
+
             if (userType == 3) {
                 JOptionPane.showMessageDialog(this, "YOU CANNOT!");
                 dispose();
@@ -112,7 +115,7 @@ public class parametter extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == unban) {
+        if (e.getSource() == unban) {//possibilité de débannir que si utilisateur est admin ou moderateur
             if (userType == 3) {
                 JOptionPane.showMessageDialog(this, "YOU CANNOT!");
                 dispose();
@@ -121,7 +124,7 @@ public class parametter extends JFrame implements ActionListener {
                 dispose();
             }
         }
-        if (e.getSource() == viewBannedUsers) {
+        if (e.getSource() == viewBannedUsers) { //possibilité de voir la liste des bannis que si utilisateur est admin ou moderateur
             if (userType == 3) {
                 JOptionPane.showMessageDialog(this, "YOU CANNOT!");
                 dispose();
@@ -131,7 +134,7 @@ public class parametter extends JFrame implements ActionListener {
             }
         }
 
-        if (e.getSource() == user_type) { // Juste le 1 à le droit de faire ça non ?
+        if (e.getSource() == user_type) { // possibilité d'afficher la liste des boutons de changement de type que si utilisateur est admin ou moderateur
             if (userType == 1 ||userType == 2 ) {
                 CardLayout cl = (CardLayout) cards.getLayout();
                 cl.next(cards);

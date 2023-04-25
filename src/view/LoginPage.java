@@ -41,15 +41,16 @@ public class LoginPage extends JFrame implements ActionListener{
         registerButton = new JButton("SingUP");
         registerButton.setBackground(bleufonce2);
         registerButton.setForeground(bleuclair);
-        // Ajouter des écouteurs d'événements pour le bouton d'inscription
+
+        // Ajoute des écouteurs d'événements pour le bouton d'inscription
         registerButton.addActionListener(this);
         loginButton.addActionListener(this);
 
 
-        // Créer un nouveau JPanel pour contenir le logo et les champs de texte et le bouton
+        // Ajoute un nouveau JPanel pour contenir le logo et les champs de texte et le bouton
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        // Créer un JLabel pour contenir l'image
+        // Crée un JLabel pour contenir l'image
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel logoLabel = new JLabel();
         ImageIcon icon = new ImageIcon("images/GuyChat.png");
@@ -58,13 +59,13 @@ public class LoginPage extends JFrame implements ActionListener{
         logoLabel.setIcon(new ImageIcon(img));
         logoPanel.add(logoLabel);
 
-        // Ajouter le JLabel à la partie supérieure du main panel
+        // Ajoute le JLabel à la partie supérieure du main panel
         mainPanel.add(logoPanel, BorderLayout.NORTH);
 
-        // Créer un nouveau JPanel pour contenir les champs de texte et le bouton
+        // Ajoute un nouveau JPanel pour contenir les champs de texte et le bouton
         JPanel registerPanel = new JPanel(new GridLayout(3, 1));
 
-        // Ajouter les composants de la même manière que dans notre code existant
+        // Ajoute les composants
         JLabel cusername = new JLabel("Username :");
         cusername.setForeground(bleufonce3);
         registerPanel.add(cusername);
@@ -78,10 +79,10 @@ public class LoginPage extends JFrame implements ActionListener{
         registerPanel.add(registerButton);
         registerPanel.add(loginButton);
 
-        // Ajouter le JPanel des champs de texte et le bouton à la partie centrale du JPanel principal
+        // Ajoute le JPanel des champs de texte et le bouton à la partie centrale du JPanel principal
         mainPanel.add(registerPanel, BorderLayout.CENTER);
 
-        // Définir la couleur d'arrière-plan de la fenêtre et du JPanel principal
+        // Défini la couleur d'arrière-plan de la fenêtre et du JPanel principal
         mainPanel.setBackground(bleuclair);
         getContentPane().add(mainPanel);
 
@@ -102,10 +103,11 @@ public class LoginPage extends JFrame implements ActionListener{
 
             Boolean userIsValid = loginController.getUserIsValidWithTimeout(2, TimeUnit.SECONDS);
             if (userIsValid == null) {
+                //si userIsValid est null = le code na pas pu recevoir les information de la base de données, affichage d'un message d'erreur
                 System.out.println("marche pas");
 
             } else {
-                if (username.isEmpty() || password.isEmpty()) { // un ou les champs de text sont vides
+                if (username.isEmpty() || password.isEmpty()) { // si les champs de text sont vides
                     JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe."); // popup qui le signale
                 } else if (userIsValid) { // si la variable = true (c'est a dire que le mdp et nom n'existe pas encore dans la bdd)
                     loginController.setUsername(username); // envoyer au controller le nouveau nom d'utilisateur

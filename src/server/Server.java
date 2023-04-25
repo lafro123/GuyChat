@@ -3,9 +3,7 @@ package server;
 import DAO.ConnectionDB;
 import DAO.MessageDAO;
 import DAO.UserDAO;
-import model.IPAddress;
 import model.Utilisateur;
-import view.pageAcceuil;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -21,51 +19,61 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import static model.Utilisateur.Status.OFFLINE;
 import static model.Utilisateur.UserType.*;
 
 public class Server {
 
-    private static final int SERVER_PORT = 9999; //test
-    //private static final String SERVER_IP ="172.20.10.3";
-    private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress();//"192.168.1.37";
+    private static final int SERVER_PORT = 9999;
     // retourne l'adress ip de ton ordi
+    private static final String SERVER_IP = "172.20.10.3";//IPAddress.getIpAddress().getHostAddress();
+
 
     static Set<String> bannedUser = new HashSet<>();
 
+    //set de client connectés
     static Set<ClientHandler> clientHandlers = new HashSet<>();
-    //static DriverManager DriverManager;
 
     public static void main(String[] args) {
+        // Affiche le démarrage du serveur
         System.out.println("Démarrage du serveur...");
+        // Affiche l'IP du serveur
         System.out.println("( L'IP du server est: " + SERVER_IP + " )");
 
+        // Tente de créer un ServerSocket avec l'IP et le port spécifiés
         try (ServerSocket serverSocket = new ServerSocket(SERVER_PORT, 50, InetAddress.getByName(SERVER_IP))) {
+            // Boucle infinie pour accepter les connexions des clients
             while (true) {
-
+                // Attend qu'un client se connecte et accepte la connexion
                 Socket clientSocket = serverSocket.accept();
                 System.out.println("model.Client connecté : " + clientSocket.getInetAddress());
 
+                // Crée un PrintWriter pour envoyer des messages au client
                 PrintWriter clientWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+                // Crée un BufferedReader pour lire les messages du client
                 BufferedReader input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                // Lit la première ligne envoyée par le client (username)
                 String username = input.readLine();
+                // Crée un objet ClientHandler pour gérer la communication avec le client
                 ClientHandler clientHandler = new ClientHandler(clientSocket, clientWriter, username);
-                //broadcastMessage("* " + username + " has entered the chat *");
-                //Server.afficherQuiEstCo();
 
+                // Ajoute le clientHandler à la liste des clients connectés
                 clientHandlers.add(clientHandler);
 
+                // Crée un nouveau thread pour gérer ce client et le démarre
                 Thread clientThread = new Thread(clientHandler);
                 clientThread.start();
-
             }
         } catch (IOException e) {
+            // Affiche un message d'erreur si la création du ServerSocket échoue
             System.err.println("Erreur lors de l'ouverture du socket serveur : " + e.getMessage());
         }
     }
 
-    public static void sendMessageTo(String username, String message, String userSender) {
 
+    public static void sendMessageTo(String username, String message, String userSender) { //envoyer un message privé
+
+
+        //addapte le message en fonction de l'envoyeur et du receveur
         for (ClientHandler handler : clientHandlers) {
             if (handler.getUsername().equalsIgnoreCase(username)) {
                 handler.getWriter().println("(private message from " + userSender + ") " + message);
@@ -81,13 +89,13 @@ public class Server {
         }
     }
 
-    public static void broadcastMessage(String message) {
+    public static void broadcastMessage(String message) { //envoyer message a tout le monde
         try {
             Connection conn = ConnectionDB.getConnection();
             MessageDAO msgDAO = new MessageDAO(conn);
             msgDAO.addMsg(message);
 
-            for (ClientHandler handler : clientHandlers) {
+            for (ClientHandler handler : clientHandlers) { //parcours tous les client connecté
                 if (bannedUser.contains(handler.getUsername())) {
                     handler.getWriter().println("pas de message pour toi, t'es banni!!!!!");
                 } else {
@@ -100,37 +108,35 @@ public class Server {
         }
     }
 
-    public static void addBanned(String username) {
+    public static void addBanned(String username) { //ajouter un bannis
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDAO = new UserDAO(conn);
-
+            //pour ajouter le banissement dans la base en passant par le DOA
             userDAO.setBan(username, true);
-
             bannedUser.add(username);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static void unBan(String username) {
+    public static void unBan(String username) { //debanir des client
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDAO = new UserDAO(conn);
-
+            //pour ajouter le banissement dans la base en passant par le DOA
             userDAO.setBan(username, false);
-
             bannedUser.remove(username);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
-    public static Boolean IsBanned(String username) {
+    public static Boolean IsBanned(String username) { //pour savoir si un client est bannis
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDAO = new UserDAO(conn);
-
             return userDAO.getBan(username);
 
         } catch (SQLException e) {
@@ -138,7 +144,7 @@ public class Server {
         }
     }
 
-    public static void sendMessageTBanned(String username) {
+    public static void sendMessageTBanned(String username) { //si un utilisateur bannis essaye de parler
         for (ClientHandler handler : clientHandlers) {
             if (handler.getUsername().equalsIgnoreCase(username)) {
                 handler.getWriter().println("pas de message pour toi, t'es banni");
@@ -146,13 +152,14 @@ public class Server {
         }
     }
 
-    public static void afficherQuiEstCo() { //sans affichage , que pour les boutons
+    public static void afficherQuiEstCo() { //permet de mettre a jour les boutons sur le coté du chat
         String userStatus;
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
-
+            //retourne tous les utilisateurs avec leur status, pour adapter la couleur des boutons
             userStatus = userDao.getListUserCo();
+
 
             for (ClientHandler handler : clientHandlers) {
                 handler.getWriter().println(userStatus);
@@ -162,7 +169,7 @@ public class Server {
         }
     }
 
-    public static void afficherQuiEstCo2(String userSender) { //qui affiche dans la ocnv qui est co
+    public static void afficherQuiEstCo2(String userSender) { //Permet d'afficher la liste des gens connecté
 
         String noms = "";
         int i = 0;
@@ -181,7 +188,7 @@ public class Server {
         }
     }
 
-    public static void isValidUser(String username, String password) {
+    public static void isValidUser(String username, String password) { //verification du nom et du mdp lors de la connection
         boolean isValid = false;
         Utilisateur.UserType type = null;
         String msg = null;
@@ -220,7 +227,7 @@ public class Server {
         }
     }
 
-    public static void inscription(String username, String password) {
+    public static void inscription(String username, String password) { //inscription d'un nouvel utilisateur
         boolean isCorrect = false;
         // utilisation du UserDAO
         try {
@@ -248,21 +255,22 @@ public class Server {
         }
     }
 
-    public static void changeType(String targetUsername, String type, String userSender) {
-        if(Objects.equals(type, "classic")){
+    public static void changeType(String targetUsername, String type, String userSender) { //changement de type d'un utilisateur par un admin
+        if (Objects.equals(type, "classic")) {
             type = String.valueOf(CLASSIC);
         }
-        if(Objects.equals(type, "admin")){
+        if (Objects.equals(type, "admin")) {
             type = String.valueOf(ADMINISTRATOR);
         }
-        if(Objects.equals(type, "moderator")){
+        if (Objects.equals(type, "moderator")) {
             type = String.valueOf(MODERATOR);
         }
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
+            //applique le changement dans la base de données
             userDao.updateUserTypeByUsername(targetUsername, type);
-
+            //previens tous les clients du changement dans le chat
             for (ClientHandler handler : clientHandlers) {
                 if (handler.getUsername().equalsIgnoreCase(targetUsername)) {
                     broadcastMessage("* " + userSender + " set " + targetUsername + " to " + type + " *");
@@ -275,12 +283,12 @@ public class Server {
         }
     }
 
-    public static void displayGif(String gif, String userSender) {
+    public static void displayGif(String gif, String userSender) { //envoi du gif aux client
         broadcastMessage("/GIF: " + gif + " " + userSender);
-        //System.out.println("test broadvast gif");
+
     }
 
-    public static void returnBannedUsers(String userSender) {
+    public static void returnBannedUsers(String userSender) { //retourne la liste des gens bannis
         StringBuilder bannedUserNames = new StringBuilder();
 
         for (String user : bannedUser) {
@@ -296,13 +304,14 @@ public class Server {
         }
     }
 
-    public static void changeProfil(String newUsername, String newPassword, String userSender) {
+    public static void changeProfil(String newUsername, String newPassword, String userSender) { //changement de nom ou de mdp
         try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
+            //applique le changement dans la base de données
             userDao.updateUser(newUsername, newPassword, userSender);
 
-            broadcastMessage("* " + userSender + " has changed his/her name to " + newUsername+" *");
+            broadcastMessage("* " + userSender + " has changed his/her name to " + newUsername + " *");
 
             for (ClientHandler handler : clientHandlers) {
                 if (handler.getUsername().equalsIgnoreCase(userSender)) {
@@ -314,10 +323,12 @@ public class Server {
             throw new RuntimeException(e);
         }
     }
-    public static void setStatus(String name,String Status) {
-        try{
+
+    public static void setStatus(String name, String Status) { //changement du status du user
+        try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
+            //applique le changement dans la base
             userDao.setStatus(name, Status);
 
         } catch (SQLException e) {
@@ -328,7 +339,7 @@ public class Server {
 
     public static void majStatProfil() {
         String stats;
-        try{
+        try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
 
@@ -343,10 +354,11 @@ public class Server {
         }
     }
 
-    public static void deleteUser(String name) {
-        try{
+    public static void deleteUser(String name) { //suppression d'un user dans la base
+        try {
             Connection conn = ConnectionDB.getConnection();
             UserDAO userDao = new UserDAO(conn);
+            //applique le changement dans la base
             userDao.deleteUser(name);
 
         } catch (SQLException e) {
