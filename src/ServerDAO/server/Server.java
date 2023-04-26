@@ -73,7 +73,6 @@ public class Server {
 
         public static void sendMessageTo(String username, String message, String userSender) { //envoyer un message privé
 
-
         //addapte le message en fonction de l'envoyeur et du receveur
         for (ClientHandler handler : clientHandlers) {
             if (handler.getUsername().equalsIgnoreCase(username)) {
@@ -94,7 +93,7 @@ public class Server {
         try {
             Connection conn = ConnectionDB.getConnection();
             MessageDAO msgDAO = new MessageDAO(conn);
-            msgDAO.addMsg(message);
+            msgDAO.addMsg(message); // ajout d'un message dans la bdd
 
             for (ClientHandler handler : clientHandlers) { //parcours tous les client connecté
                 if (bannedUser.contains(handler.getUsername())) {

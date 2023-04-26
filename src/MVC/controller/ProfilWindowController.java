@@ -1,29 +1,32 @@
-package MVC.controller;
+package controller;
 
 import MVC.model.Client;
 import MVC.view.ProfilWindow;
+import MVC.view.SignUP;
 import MVC.view.pageAcceuil;
 
 import java.util.Observable;
 
-public class ProfilWindowController extends BaseController {
+public class ProfilWindowController extends controller.BaseController {
 
     private ProfilWindow view;
     private pageAcceuil viewPageAcceuil;
-    private int nbBan, nbAdmin, nbMod, nbClassic, nbOFF, nbON, nbAway, nbCo;
+    private int nbBan, nbAdmin, nbMod, nbClassic, nbOFF, nbON, nbAway, nbCo; // toutes les variables pour les statistiques
 
     public ProfilWindowController(Client model) {
         super(model);
-    }
+    } // constructeur d'apres la classe mere
     public void setView(ProfilWindow view, pageAcceuil viewAcceuil) {
         this.view = view;
         this.viewPageAcceuil = viewAcceuil;
     }
 
     public void closeChatWindow(pageAcceuil view) {
+        // utiliser pour fermer le programme lors de la deconnection d'un utilisateur
         this.viewPageAcceuil.setVisible(false);
     }
 
+    // que des getters et setters pour recuperer et mettre a jour les valeurs de chaque variable
     public void setNbBan(int nbBan) {
         this.nbBan = nbBan;
     }
