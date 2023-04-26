@@ -45,7 +45,7 @@ public class pageAcceuil extends JFrame implements ActionListener {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        // Création du panneau de gauche pour la liste des utilisateurs et la barre de recherche
+        // On créé le panneau de gauche pour la liste des utilisateurs et la barre de recherche
         JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new BorderLayout());
 
@@ -66,6 +66,7 @@ public class pageAcceuil extends JFrame implements ActionListener {
             }
         });
 
+        //On ajoute les utilisateurs au vecteurs de boutons qu'on affiche dans le pannel de gauche
         JPanel listPanel = new JPanel();
         listPanel.setLayout(new BorderLayout());
         JLabel userListLabel = new JLabel("         User List       ");
@@ -115,8 +116,7 @@ public class pageAcceuil extends JFrame implements ActionListener {
                 }
             }
         });
-
-
+        //On ajoute tous les pannels au panel principal.
         listPanel.add(searchPanel, BorderLayout.SOUTH);
         leftPanel.add(listPanel, BorderLayout.CENTER);
         mainPanel.add(leftPanel, BorderLayout.WEST);
@@ -128,7 +128,7 @@ public class pageAcceuil extends JFrame implements ActionListener {
         chatArea = new JEditorPane();
 
         chatArea.setEditable(false);
-        chatArea.setContentType("text/html");
+        chatArea.setContentType("text/html");// afin de pouvoir afficher du contenu HTML
         editorKit = new HTMLEditorKit();
         doc = new HTMLDocument();
         chatArea.setEditorKit(editorKit);
@@ -404,7 +404,6 @@ public class pageAcceuil extends JFrame implements ActionListener {
         appendMessage(mess, currentTime, rightStyle);
     }
 
-    //    background-size: 10px; display: inline-block;
     public void sendMessageLeft(String mess) {//affichage sur la gauche d'un message recu venant d'un autre user
         String currentTime = getCurrentTime();
         String leftStyle = "<div style=' text-align: left; background-color: #3498DB; color:white; max-width: 50px; padding: 5px 10px; border:0px black solid; margin-right:350px; margin-bottom: 5px;'>%s<br><span style='font-size: 0.8em; color: white; display: inline-flex;'>%s</span></div>";

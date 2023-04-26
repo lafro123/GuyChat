@@ -27,30 +27,31 @@ public class LoginPage extends JFrame implements ActionListener{
 
     public LoginPage(LoginController loginController) {
 
-        // Créer une nouvelle fenêtre JFrame avec un titre
+        // Création de la nouvelle fenêtre JFrame avec un titre: LOGIN
         super("LOGIN");
         this.loginController = loginController;
 
-        // Initialiser les champs de texte et le bouton
+        // On initialise les champs de texte et le bouton
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
-        loginButton = new JButton("Login");
-        loginButton.setBackground(bleufonce2);
-        loginButton.setForeground(bleuclair);
 
-        registerButton = new JButton("SingUP");
+        loginButton = new JButton("Login");
+        loginButton.setBackground(bleufonce2);//Couleur du bouton
+        loginButton.setForeground(bleuclair);//Couleur du texte du bouton
+
+        registerButton = new JButton("SignUP");
         registerButton.setBackground(bleufonce2);
         registerButton.setForeground(bleuclair);
 
-        // Ajoute des écouteurs d'événements pour le bouton d'inscription
+        // On ajoute des listener d'événements pour le bouton d'inscription et le bouton de connexion
         registerButton.addActionListener(this);
         loginButton.addActionListener(this);
 
 
-        // Ajoute un nouveau JPanel pour contenir le logo et les champs de texte et le bouton
+        // On ajoute un nouveau JPanel pour contenir le logo et les champs de texte et le bouton
         JPanel mainPanel = new JPanel(new BorderLayout());
 
-        // Crée un JLabel pour contenir l'image
+        // On créé un JLabel pour contenir l'image
         JPanel logoPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JLabel logoLabel = new JLabel();
         ImageIcon icon = new ImageIcon("images/GuyChat.png");
@@ -59,13 +60,14 @@ public class LoginPage extends JFrame implements ActionListener{
         logoLabel.setIcon(new ImageIcon(img));
         logoPanel.add(logoLabel);
 
-        // Ajoute le JLabel à la partie supérieure du main panel
+        // On ajoute le JLabel à la partie supérieure du main panel
         mainPanel.add(logoPanel, BorderLayout.NORTH);
 
-        // Ajoute un nouveau JPanel pour contenir les champs de texte et le bouton
+        // On ajoute un nouveau JPanel pour contenir les champs de texte et le bouton
         JPanel registerPanel = new JPanel(new GridLayout(3, 1));
 
-        // Ajoute les composants
+        // On ajoute les composants
+        // Création des zones de textes username et password
         JLabel cusername = new JLabel("Username :");
         cusername.setForeground(bleufonce3);
         registerPanel.add(cusername);
@@ -79,23 +81,23 @@ public class LoginPage extends JFrame implements ActionListener{
         registerPanel.add(registerButton);
         registerPanel.add(loginButton);
 
-        // Ajoute le JPanel des champs de texte et le bouton à la partie centrale du JPanel principal
+        // On ajoute le JPanel des champs de texte et le bouton à la partie centrale du JPanel principal
         mainPanel.add(registerPanel, BorderLayout.CENTER);
 
-        // Défini la couleur d'arrière-plan de la fenêtre et du JPanel principal
+        // On définit la couleur d'arrière-plan de la fenêtre et du JPanel principal
         mainPanel.setBackground(bleuclair);
         getContentPane().add(mainPanel);
 
         pack();
-        setVisible(true);
+        setVisible(true);//On rend la fenêtre visible
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Permet de fermer le programme quand on ferme la fenêtre
     }
 
     public void actionPerformed(ActionEvent e) {
 
-        if (e.getSource() == loginButton) {
-
+        if (e.getSource() == loginButton) { // si on clique sur le bouton Login
+            // on récupère les informations écrites par l'utilisateur
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
@@ -106,7 +108,8 @@ public class LoginPage extends JFrame implements ActionListener{
                 //si userIsValid est null = le code na pas pu recevoir les information de la base de données, affichage d'un message d'erreur
                 System.out.println("marche pas");
 
-            } else {
+            }
+            else {
                 if (username.isEmpty() || password.isEmpty()) { // si les champs de text sont vides
                     JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe."); // popup qui le signale
                 } else if (userIsValid) { // si la variable = true (c'est a dire que le mdp et nom n'existe pas encore dans la bdd)
@@ -125,7 +128,7 @@ public class LoginPage extends JFrame implements ActionListener{
             }
         }
         MessageController signup;
-        if (e.getSource() == registerButton) {
+        if (e.getSource() == registerButton) { //Si on clique sur le bouton register
 
             SignUpController SignUpController = new SignUpController(loginController.getModel());
             SignUP view3 = new SignUP(SignUpController);
