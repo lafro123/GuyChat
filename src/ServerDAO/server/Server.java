@@ -23,7 +23,7 @@ import java.util.Set;
 
 import static MVC.model.Utilisateur.UserType.*;
 
-public class Server { //
+public class Server {
 
     private static final int SERVER_PORT = 9999;
     // retourne l'adress ip de ton ordi
