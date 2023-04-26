@@ -27,7 +27,7 @@ public class Server {
 
     private static final int SERVER_PORT = 9999;
     // retourne l'adress ip de ton ordi
-        private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress();
+    private static final String SERVER_IP = "172.20.10.3";//IPAddress.getIpAddress().getHostAddress();
 
 
     static Set<String> bannedUser = new HashSet<>();
@@ -72,19 +72,19 @@ public class Server {
     }
 
 
-        public static void sendMessageTo(String username, String message, String userSender) { //envoyer un message privé
+    public static void sendMessageTo(String username, String message, String userSender) { //envoyer un message privé
 
         //addapte le message en fonction de l'envoyeur et du receveur
         for (ClientHandler handler : clientHandlers) {
             if (handler.getUsername().equalsIgnoreCase(username)) {
-                handler.getWriter().println("(private message from " + userSender + ") " + message);
+                handler.getWriter().println(userSender +": (private message from " + userSender + ") " + message);
 
                 break;
             }
         }
         for (ClientHandler handler : clientHandlers) {
             if (handler.getUsername().equalsIgnoreCase(userSender)) {
-                handler.getWriter().println("(private message to " + username + ") " + message);
+                handler.getWriter().println(userSender +": (private message to " + username + ") " + message);
                 break;
             }
         }
