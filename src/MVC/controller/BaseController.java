@@ -1,6 +1,6 @@
 package controller;
 
-import model.Client;
+import MVC.model.Client;
 
 import java.util.Observable;
 import java.util.Observer;

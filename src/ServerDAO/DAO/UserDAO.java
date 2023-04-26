@@ -1,6 +1,6 @@
 package DAO;
 
-import model.Utilisateur;
+import MVC.model.Utilisateur;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

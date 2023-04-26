@@ -1,9 +1,9 @@
 package controller;
 
-import model.Client;
-import view.ProfilWindow;
-import view.SignUP;
-import view.pageAcceuil;
+import MVC.model.Client;
+import MVC.view.ProfilWindow;
+import MVC.view.SignUP;
+import MVC.view.pageAcceuil;
 
 import java.util.Observable;
 

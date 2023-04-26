@@ -1,7 +1,7 @@
 package controller;
 
-import view.SignUP;
-import model.Client;
+import MVC.view.SignUP;
+import MVC.model.Client;
 
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;

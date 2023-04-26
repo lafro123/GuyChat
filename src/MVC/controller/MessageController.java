@@ -1,8 +1,8 @@
 package controller;
 
-import model.Client;
-import model.Utilisateur;
-import view.pageAcceuil;
+import MVC.model.Client;
+import MVC.model.Utilisateur;
+import MVC.view.pageAcceuil;
 
 import java.util.*;
 import java.util.regex.Matcher;
