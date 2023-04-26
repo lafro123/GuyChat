@@ -1,5 +1,7 @@
 package ServerDAO.server;
 
+import ServerDAO.server.Server;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

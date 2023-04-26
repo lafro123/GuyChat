@@ -1,9 +1,9 @@
 package ServerDAO.server;
 
-import MVC.model.IPAddress;
-import ServerDAO.server.DAO.ConnectionDB;
-import ServerDAO.server.DAO.MessageDAO;
-import ServerDAO.server.DAO.UserDAO;
+import ServerDAO.server.ClientHandler;
+import ServerDAO.DAO.MessageDAO;
+import ServerDAO.DAO.UserDAO;
+import ServerDAO.DAO.ConnectionDB;
 import MVC.model.Utilisateur;
 
 import java.io.BufferedReader;
