@@ -1,4 +1,4 @@
-package DAO;
+package ServerDAO.DAO;
 
 import MVC.model.Utilisateur;
 
@@ -7,9 +7,9 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.List;
 
-import static model.Utilisateur.Status.*;
+import static MVC.model.Utilisateur.Status.*;
 
-public class UserDAO implements DAO.DAO<Utilisateur> {
+public class UserDAO implements ServerDAO.DAO.DAO<Utilisateur> {
     private Connection conn;
 
     public UserDAO(Connection connection){

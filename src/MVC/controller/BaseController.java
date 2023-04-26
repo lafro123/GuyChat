@@ -1,4 +1,4 @@
-package controller;
+package MVC.controller;
 
 import MVC.model.Client;
 

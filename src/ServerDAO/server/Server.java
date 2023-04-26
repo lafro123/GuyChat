@@ -1,5 +1,6 @@
 package ServerDAO.server;
 
+import MVC.model.IPAddress;
 import ServerDAO.server.ClientHandler;
 import ServerDAO.DAO.MessageDAO;
 import ServerDAO.DAO.UserDAO;
@@ -26,7 +27,7 @@ public class Server { //
 
     private static final int SERVER_PORT = 9999;
     // retourne l'adress ip de ton ordi
-        private static final String SERVER_IP ="172.20.10.3"; //IPAddress.getIpAddress().getHostAddress();
+        private static final String SERVER_IP = IPAddress.getIpAddress().getHostAddress();
 
 
     static Set<String> bannedUser = new HashSet<>();

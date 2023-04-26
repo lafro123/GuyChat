@@ -1,4 +1,4 @@
-package model;
+package MVC.model;
 
 import java.sql.Timestamp;
 

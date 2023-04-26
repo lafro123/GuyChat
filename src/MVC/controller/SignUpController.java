@@ -1,4 +1,4 @@
-package controller;
+package MVC.controller;
 
 import MVC.view.SignUP;
 import MVC.model.Client;
@@ -8,7 +8,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
-public class SignUpController extends controller.BaseController {
+public class SignUpController extends MVC.controller.BaseController {
     // Attributs et méthodes spécifiques pour les pages d'authentification
     private SignUP view; // attributs de type SignUp
     private BlockingQueue<Boolean> userCorrectQueue = new LinkedBlockingQueue<>();

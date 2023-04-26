@@ -1,4 +1,4 @@
-package controller;
+package MVC.controller;
 
 import MVC.model.Client;
 import MVC.view.ProfilWindow;
@@ -7,7 +7,7 @@ import MVC.view.pageAcceuil;
 
 import java.util.Observable;
 
-public class ProfilWindowController extends controller.BaseController {
+public class ProfilWindowController extends MVC.controller.BaseController {
 
     private ProfilWindow view;
     private pageAcceuil viewPageAcceuil;

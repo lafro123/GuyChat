@@ -1,4 +1,4 @@
-package controller;
+package MVC.controller;
 
 import MVC.model.Client;
 import MVC.model.Utilisateur;
@@ -9,7 +9,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-public class MessageController extends controller.BaseController {
+public class MessageController extends MVC.controller.BaseController {
 
     private pageAcceuil view;
     private Set<String> allNames = new HashSet<>(Arrays.asList(model.getUser().getUsername()));

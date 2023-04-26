@@ -1,8 +1,8 @@
-package controller;
+package MVC.controller;
 
-import model.Utilisateur;
-import view.LoginPage;
-import model.Client;
+import MVC.model.Utilisateur;
+import MVC.view.LoginPage;
+import MVC.model.Client;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -11,7 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
-public class LoginController extends controller.BaseController implements Observer {
+public class LoginController extends MVC.controller.BaseController implements Observer {
 
     // Attributs et méthodes spécifiques pour les pages d'authentification
     private LoginPage view;
