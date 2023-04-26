@@ -20,20 +20,23 @@ public class SignUP extends JFrame implements ActionListener, Observer {
 
     public SignUP(SignUpController signUpController) {
 
-        // Créer une nouvelle fenêtre JFrame avec un titre
+        // Création une nouvelle fenêtre JFrame avec un titre
         super("SIGN UP");
         this.signUpController = signUpController;
-        // Initialiser les champs de texte et le bouton
+
+        // On initialise les champs de texte et le bouton
         usernameField = new JTextField(20);
         passwordField = new JPasswordField(20);
         loginButton = new JButton("Login");
         registerButton = new JButton("Sign UP");
         registerButton.setBackground(Color.black);
         loginButton.setBackground(Color.black);
-        // Ajouter des écouteurs d'événements pour le bouton d'inscription
+
+        // On ajoute des listenner d'événements pour le bouton d'inscription
         registerButton.addActionListener(this);
         loginButton.addActionListener(this);
-        // Créer un nouveau JPanel pour contenir les champs de texte et le bouton
+
+        // On créé un nouveau JPanel pour contenir les champs de texte et le bouton
         JPanel registerPanel = new JPanel(new GridLayout(3, 1));
         registerPanel.add(new JLabel("Choose user name :"));
         registerPanel.add(usernameField);
@@ -43,12 +46,12 @@ public class SignUP extends JFrame implements ActionListener, Observer {
         registerPanel.add(registerButton);
 
 
-        // Définir la couleur d'arrière-plan de la fenêtre et du JPanel
+        // On définit la couleur d'arrière-plan de la fenêtre et du JPanel
         registerPanel.setBackground(Color.white);
         getContentPane().add(registerPanel, BorderLayout.CENTER);
         getContentPane().setBackground(Color.red);
 
-        // Définir les propriétés de la fenêtre JFrame
+        // Propriétés de la fenêtre JFrame
         pack();
         setVisible(true);
         setLocationRelativeTo(null);
@@ -57,9 +60,9 @@ public class SignUP extends JFrame implements ActionListener, Observer {
 
     public void actionPerformed(ActionEvent e) {
 
-        // Vérifier si le bouton d'inscription a été cliqué
+        // Vérification si le bouton d'inscription a été cliqué
         if (e.getSource() == registerButton) {
-            // Récupérer le nom d'utilisateur et le mot de passe entrés
+            // Récupère le nom d'utilisateur et le mot de passe entrés
             String username = usernameField.getText();
             String password = new String(passwordField.getPassword());
 
@@ -67,7 +70,7 @@ public class SignUP extends JFrame implements ActionListener, Observer {
 
             Boolean userIsCorrect = signUpController.getUserIsCorrect(3, TimeUnit.SECONDS);
 
-            // Vérifier si les informations d'inscription sont valides
+            // Vérification si les informations d'inscription sont valides
             if (username.isEmpty() || password.isEmpty()) {
                 JOptionPane.showMessageDialog(this, "Veuillez saisir un nom d'utilisateur et un mot de passe.");
             } else {

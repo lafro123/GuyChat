@@ -20,16 +20,17 @@ public class parametter extends JFrame implements ActionListener {
     private String nom;
 
     public parametter(String nom, MessageController messageController) {
+        //Création de la fenêtre
         super("Parametter");
         this.messageController = messageController;
         this.nom = nom;
         JPanel parpan = new JPanel(new GridLayout(0, 1)); // Changez le layout en GridLayout avec un nombre variable de lignes
-       parpan.setPreferredSize(new Dimension(200, 300));
-//ajout des differents boutons d'action
+        parpan.setPreferredSize(new Dimension(200, 300));
+        //ajout des differents boutons d'action
         ban = new JButton("Ban");
         ban.addActionListener(this);
-        ban.setBackground(bleufonce1);
-        ban.setForeground(bleuclair);
+        ban.setBackground(bleufonce1);//couleur du bouton
+        ban.setForeground(bleuclair);//couleur du texte du bouton
 
         unban = new JButton("UnBan");
         unban.addActionListener(this);
@@ -51,9 +52,8 @@ public class parametter extends JFrame implements ActionListener {
         parpan.add(viewBannedUsers);
         parpan.add(user_type);
 
-        // Créez un nouveau JPanel pour les boutons de type d'utilisateur
+        // On créé un nouveau JPanel pour les boutons de type d'utilisateur
         userTypeButtonsPanel = new JPanel(new GridLayout(3, 1));
-
 
         setAdminButton = new JButton("Set Admin");
         setAdminButton.addActionListener(this);
